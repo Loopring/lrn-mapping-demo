@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Index</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script src="lib/crypto.js"></script>
+    <script src="lib/aes.js"></script>
+    <script src="lib/mode-ecb.js"></script>
+    <script src="lib/pad-nopadding.js"></script>
+    <script src="lib/scrypt.js"></script>
+    <script src="lib/neo-ts.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <fieldset>
+        <h2>NEO Account To Ethereum Account Mapping</h2>
+        <form id="bindForm">
+          <textarea id="privateKey" rows="5" class="ghost-input" placeholder="NEO Account Private Key " required ></textarea>
+          <input id="ethAddress" type="text" class="ghost-input" placeholder="Ethereum Address " required />
+          <input type="button" class="ghost-button" value="Sign" onclick="sign();">
+          <input type="button" class="ghost-button" value="Submit" onclick="submit();">
+        </form>
+      </fieldset>
+
+      <% if(locals.msg != null) { %>
+        <p> {%= locals.msg %} </p>
+      <% } %>
+    </div>
+  </body>
+
+  <script>
+   function sign() {
+     const privKey = document.getElementById("privateKey").value.trim();
+     const source = document.getElementById("ethAddress").value.trim();
+     console.log(privKey, source);
+     const sign = ThinNeo.Helper.Sign(source, privKey);
+     const signHex = sign.toHexString();
+     console.log("signHex", signHex);
+   }
+
+   function submit() {
+
+   }
+  </script>
+</html>
