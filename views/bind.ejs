@@ -10,6 +10,10 @@
     <script src="lib/pad-nopadding.js"></script>
     <script src="lib/scrypt.js"></script>
     <script src="lib/neo-ts.js"></script>
+
+    <script>
+     let signed = false;
+    </script>
   </head>
   <body>
     <div class="container">
@@ -18,12 +22,22 @@
         <div class="home">
           <a class="home" href="/">Home</a>
         </div>
-        <form id="bindForm">
-          <textarea id="privateKeyWif" rows="5" class="ghost-input" placeholder="NEO Account Private Key WIF " required ></textarea>
-          <input id="ethAddress" name="ethAddress" type="text" class="ghost-input" placeholder="Ethereum Address " value="<%=locals.ethAddress%>" required />
+        <form>
+          <input id="privateKeyWif" type="text" class="ghost-input" placeholder="NEO Account Private Key WIF " required ></input>
+          <input id="ethAddress" type="text" class="ghost-input" placeholder="Ethereum Address " value="<%=locals.ethAddress%>" required />
           <input type="button" class="ghost-button" value="Sign" onclick="sign();">
+        </form>
+      </fieldset>
+
+      <fieldset id="sign-result" style="visibility: hidden; display: none">
+        <form id="bind-form" action="/bind" method="post">
+          <input id="neoAddress" name="neoAddress" type="text" class="ghost-input" readonly />
+          <input id="ethAddress2" name="ethAddress" type="text" class="ghost-input" readonly />
+          <textarea id="signText" name="signText" rows="5" class="ghost-input" readonly ></textarea>
           <input type="button" class="ghost-button" value="Submit" onclick="submit();">
         </form>
+
+        <p id="error-msg"> </p>
       </fieldset>
 
       <% if(msg) { %>
@@ -39,27 +53,20 @@
      console.log(wif, source);
      const privKey = ThinNeo.Helper.GetPrivateKeyFromWIF(wif);
      const pubKey = ThinNeo.Helper.GetPublicKeyFromPrivateKey(privKey);
-     const address = ThinNeo.Helper.GetAddressFromPublicKey(pubKey);
-     console.log(privKey.toHexString(), pubKey.toHexString(), address);
+     const neoAddress = ThinNeo.Helper.GetAddressFromPublicKey(pubKey);
+     console.log(privKey.toHexString(), pubKey.toHexString(), neoAddress);
 
      const sign = ThinNeo.Helper.Sign(source.hexToBytes(), privKey);
      const signHex = sign.toHexString();
      console.log("signHex", signHex);
 
-     const form = document.getElementById("bindForm");
-     form.action = "/bind?pubKey=" + pubKey.toHexString() +
-                   "&neoAddress=" + address +
-                   "&signText=" + signHex ;
-     form.method = "post";
-
      // erease private key WIF in this page:
      document.getElementById("privateKeyWif").value = "";
 
-     form.submit();
-   }
-
-   function submit() {
-
+     document.getElementById("sign-result").style.visibility = "visible";
+     document.getElementById("neoAddress").value = neoAddress;
+     document.getElementById("ethAddress2").value = source;
+     document.getElementById("signText").value = signHex;
    }
   </script>
 </html>

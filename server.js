@@ -24,9 +24,9 @@ app.post("/bind", function(req, res){
   console.log("req body:", req.body);
   console.log("req query:", req.query);
 
-  const neoAddress = req.query.neoAddress;
+  const neoAddress = req.body.neoAddress;
   const ethAddress = req.body.ethAddress;
-  const signText = req.query.signText;
+  const signText = req.body.signText;
   let msg = "";
   if (verify()) {
     msg = "Bind succeeded!<br/> <p>Your Neo Address:  " + neoAddress +
