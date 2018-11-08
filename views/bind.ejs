@@ -15,28 +15,47 @@
     <div class="container">
       <fieldset>
         <h2>NEO Account To Ethereum Account Mapping</h2>
+        <div class="home">
+          <a class="home" href="/">Home</a>
+        </div>
         <form id="bindForm">
-          <textarea id="privateKey" rows="5" class="ghost-input" placeholder="NEO Account Private Key " required ></textarea>
-          <input id="ethAddress" type="text" class="ghost-input" placeholder="Ethereum Address " required />
+          <textarea id="privateKeyWif" rows="5" class="ghost-input" placeholder="NEO Account Private Key WIF " required ></textarea>
+          <input id="ethAddress" name="ethAddress" type="text" class="ghost-input" placeholder="Ethereum Address " value="<%=locals.ethAddress%>" required />
           <input type="button" class="ghost-button" value="Sign" onclick="sign();">
           <input type="button" class="ghost-button" value="Submit" onclick="submit();">
         </form>
       </fieldset>
 
-      <% if(locals.msg != null) { %>
-        <p> {%= locals.msg %} </p>
+      <% if(msg) { %>
+        <p class="msg"> <%- msg %> </p>
       <% } %>
     </div>
   </body>
 
   <script>
    function sign() {
-     const privKey = document.getElementById("privateKey").value.trim();
+     const wif = document.getElementById("privateKeyWif").value.trim();
      const source = document.getElementById("ethAddress").value.trim();
-     console.log(privKey, source);
-     const sign = ThinNeo.Helper.Sign(source, privKey);
+     console.log(wif, source);
+     const privKey = ThinNeo.Helper.GetPrivateKeyFromWIF(wif);
+     const pubKey = ThinNeo.Helper.GetPublicKeyFromPrivateKey(privKey);
+     const address = ThinNeo.Helper.GetAddressFromPublicKey(pubKey);
+     console.log(privKey.toHexString(), pubKey.toHexString(), address);
+
+     const sign = ThinNeo.Helper.Sign(source.hexToBytes(), privKey);
      const signHex = sign.toHexString();
      console.log("signHex", signHex);
+
+     const form = document.getElementById("bindForm");
+     form.action = "/bind?pubKey=" + pubKey.toHexString() +
+                   "&neoAddress=" + address +
+                   "&signText=" + signHex ;
+     form.method = "post";
+
+     // erease private key WIF in this page:
+     document.getElementById("privateKeyWif").value = "";
+
+     form.submit();
    }
 
    function submit() {

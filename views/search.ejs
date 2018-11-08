@@ -9,16 +9,18 @@
     <div class="container">
       <fieldset>
         <h2>NEO Account To Ethereum Account Mapping</h2>
-        <form action="/" method="post">
+        <div class="home">
+          <a class="home" href="/">Home</a>
+        </div>
+
+        <form action="/search" method="post">
           <input name="neoAddress" type="text" class="ghost-input" placeholder="NEO Address " required />
           <input type="submit" class="ghost-button" value="Search">
         </form>
       </fieldset>
 
       <% if(searchResult) { %>
-        <p> {%= searchResult %} </p>
-      <% } else { %>
-        <p> No Ethereum Binding Address Found. </p>
+        <p> <%= searchResult %> </p>
       <% } %>
     </div>
   </body>
