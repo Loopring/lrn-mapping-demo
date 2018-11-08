@@ -31,9 +31,9 @@
 
       <fieldset id="sign-result" style="visibility: hidden; display: none">
         <form id="bind-form" action="/bind" method="post">
-          <input id="neoAddress" name="neoAddress" type="text" class="ghost-input" readonly />
-          <input id="ethAddress2" name="ethAddress" type="text" class="ghost-input" readonly />
-          <textarea id="signText" name="signText" rows="5" class="ghost-input" readonly ></textarea>
+          <input id="neoAddress" name="neoAddress" type="text" class="ghost-input2" readonly />
+          <input id="ethAddress2" name="ethAddress" type="text" class="ghost-input2" readonly />
+          <textarea id="signText" name="signText" rows="5" class="ghost-input2" readonly ></textarea>
           <input type="button" class="ghost-button" value="Submit" onclick="submit();">
         </form>
 
@@ -64,6 +64,7 @@
      document.getElementById("privateKeyWif").value = "";
 
      document.getElementById("sign-result").style.visibility = "visible";
+     document.getElementById("sign-result").style.display = "inline";
      document.getElementById("neoAddress").value = neoAddress;
      document.getElementById("ethAddress2").value = source;
      document.getElementById("signText").value = signHex;
