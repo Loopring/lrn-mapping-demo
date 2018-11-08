@@ -20,12 +20,12 @@ function loadData() {
   return resMap;
 }
 
-function addItem(neoAddr, ethAddr, signText) {
+export function addItem(neoAddr, ethAddr, signText) {
   const line = neoAddress + "," + ethAddress + "," + signText;
   fs.appendFileSync(utils.dataFile, line + "\n");
 }
 
-function search(neoAddr) {
+export function search(neoAddr) {
   const dataMap = loadData();
   return dataMap.get(neoAddr);
 }
