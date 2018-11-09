@@ -13,7 +13,14 @@ app.get("/", function(req, res) {
 });
 
 app.get("/bind", function(req, res) {
-  res.render("bind", {msg: ""});
+  res.locals = {
+    msg: "",
+    neoAddress: "",
+    ethAddress: "",
+    signText: ""
+  };
+
+  res.render("bind");
 });
 
 app.post("/bind", function(req, res){
@@ -27,16 +34,22 @@ app.post("/bind", function(req, res){
   const neoAddress = req.body.neoAddress;
   const ethAddress = req.body.ethAddress;
   const signText = req.body.signText;
-  let msg = "";
+  let msg;
   if (verify()) {
-    msg = "Bind succeeded!<br/> <p>Your Neo Address:  " + neoAddress +
-      "</p> <p>Your Ethereum Address:  " + ethAddress +
-      "</p> <p>Sign Text:  " + signText + "</p>";
+    msg = "Bind succeeded!";
+  } else {
+    msg = "Bind Failed! Verify signature failed.";
   }
 
   addItem(neoAddress, ethAddress, signText);
+  res.locals = {
+    msg: msg,
+    neoAddress: neoAddress,
+    ethAddress: ethAddress,
+    signText: signText
+  };
   
-  res.render("bind", { msg: msg, ethAddress: ethAddress });
+  res.render("bind");
 });
 
 app.get("/search", function(req, res) {
@@ -48,7 +61,7 @@ app.post("/search", function(req, res) {
   const bindEthAddr = search(neoAddr);
   let msg;
   if (bindEthAddr) {
-    msg = "Your Bind Ethereum Address Is:  " + bindEthAddr;
+    msg = "Your Binding Ethereum Address Is:  " + bindEthAddr;
   } else {
     msg = "No Ethereum Address Binded To This Neo Address.  ";
   }
@@ -77,8 +90,14 @@ function loadData() {
 }
 
 function addItem(neoAddress, ethAddress, signText) {
-  const line = neoAddress + "," + ethAddress + "," + signText;
-  fs.appendFileSync(dataFile, line + "\n");
+  const dataMap = loadData();
+  const ethAddr = dataMap.get(neoAddress);
+  if (ethAddress === ethAddr) {
+    // eth address already binded to this neo address, skip.
+  } else {
+    const line = neoAddress + "," + ethAddress + "," + signText;
+    fs.appendFileSync(dataFile, line + "\n");
+  }
 }
 
 function search(neoAddr) {

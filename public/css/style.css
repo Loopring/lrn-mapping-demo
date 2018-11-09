@@ -11,12 +11,12 @@ body {
 
 h2 {
   color: #4b545f;
-  margin: 50px 0px 20px 0px;
+  margin: 20px 0px 20px 0px;
   text-align: center;
 }
 
 .container {
-  width: 700px;
+  width: 780px;
   margin: 0 auto;
 }
 
@@ -42,7 +42,7 @@ fieldset {
   padding: 30px;
   text-align: center;
 }
-.ghost-input, p {
+.ghost-input {
   display: block;
   font-weight:300;
   width: 100%;
@@ -64,15 +64,37 @@ fieldset {
   -o-transition: all 0.1s ease-in-out;
   transition: all 0.1s ease-in-out;
 }
-/* .ghost-input:focus { */
-/*   border-bottom:1px solid #ddd; */
+.ghost-input:focus {
+  border-bottom:1px solid #ddd;
+}
+
+/* label { */
+/*     /\* Other styling.. *\/ */
+/*     text-align: right; */
+/*     clear: both; */
+/*     float:left; */
+/*     margin-right:15px; */
 /* } */
+
+table {
+  width: 100%;
+}
+
+td.lable {
+  color: #4b545f;
+  font-size: 18px;
+  width: 20%;
+  padding-right:15px;  
+  text-align: right;
+}
+
+td.content {
+  width: 80%;
+}
 
 .ghost-input2 {
   font-weight:300;
-  width: 100%;
   font-size: 18px;
-  border:0px;
   outline: none;
   width: 100%;
   -webkit-box-sizing: border-box;
@@ -82,7 +104,7 @@ fieldset {
   background: #fff;
   font-family: Open Sans,Verdana;
   padding: 10px 15px;
-  margin: 10px 0px 0px 0px;
+  margin: 5px 0px 0px 0px;
   -webkit-transition: all 0.1s ease-in-out;
   -moz-transition: all 0.1s ease-in-out;
   -ms-transition: all 0.1s ease-in-out;
@@ -117,6 +139,7 @@ p.msg {
 }
 
 p {
+  font-size: 18px;
   display: block;
   color: #515151;
 }
